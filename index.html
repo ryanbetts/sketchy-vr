@@ -4,15 +4,180 @@
     <title>Storyboard Template</title>
     <meta name="description" content="Storyboard Template">
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/ngokevin/aframe-event-set-component/master/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://rawgit.com/ngokevin/aframe-layout-component/master/dist/aframe-layout-component.min.js"></script>
+    <script src="components/button.js"></script>
+    <script src="assets/storyboard-controls/storyboardControls.js"></script>
   </head>
   <body>
     <a-scene>
+
+      <!-- place your storyboard assets here -->
       <a-assets>
         <img id="frontSkyTexture" src="assets/front.jpg">
         <img id="backSkyTexture" src="assets/back.jpg">
       </a-assets>
-      <a-sky height="2048" width="2048" radius="30" src="#backSkyTexture" phi-length="180" theta-length="180"></a-sky>
-      <a-sky height="2048" width="2048" radius="30" src="#frontSkyTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
+
+      <!--
+        place your storyboard frames in this file
+        Every frame needs to have a `storyboard-frame-id` attribute with a
+        unique ID.
+      -->
+      <a-entity id="storyboard">
+
+        <!-- Frame 1 -->
+        <a-entity storyboard-frame-id="frame-1">
+          <a-sky height="2048" width="2048" radius="300" src="#backSkyTexture" phi-length="180" theta-length="180"></a-sky>
+          <a-sky height="2048" width="2048" radius="300" src="#frontSkyTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
+        </a-entity>
+
+        <!-- Frame 2 -->
+        <a-entity storyboard-frame-id="frame-2">
+          <!--
+            If you want an element to link to a specific frame when clicked,
+            give it a `storyboard-target-id` attribute
+          -->
+          <a-box position="0 0 -4" color="orange" storyboard-target-id="frame-4"/>
+        </a-entity>
+
+        <!-- Frame 3 -->
+        <a-entity storyboard-frame-id="frame-3">
+          <a-box position="0 0 -4" color="yellow"/>
+        </a-entity>
+
+        <!-- Frame 4 -->
+        <a-entity storyboard-frame-id="frame-4">
+          <a-box position="0 0 -4" color="red"/>
+        </a-entity>
+      </a-entity>
+
+      <!---
+
+        HERE BE DRAGONS!
+
+        Don't touch anything beyond this point please.
+
+
+                              /\
+                              ||
+                              ||
+                              ||
+                              ||                                               ~-----~
+                              ||                                            /===--  ---~~~
+                              ||                   ;'                 /==~- --   -    ---~~~
+                              ||                (/ ('              /=----         ~~_  --(  '
+                              ||             ' / ;'             /=----               \__~
+           '                ~==_=~          '('             ~-~~      ~~~~        ~~~--\~'
+           \\                (c_\_        .i.             /~--    ~~~--   -~     (     '
+            `\               (}| /       / : \           / ~~------~     ~~\   (
+            \ '               ||/ \      |===|          /~/             ~~~ \ \(
+            ``~\              ~~\  )~.~_ >._.< _~-~     |`_          ~~-~     )\
+             '-~                 {  /  ) \___/ (   \   |` ` _       ~~         '
+             \ -~\                -<__/  -   -  L~ -;   \\    \ _ _/
+             `` ~~=\                  {    :    }\ ,\    ||   _ :(
+              \  ~~=\__                \ _/ \_ /  )  } _//   ( `|'
+              ``    , ~\--~=\           \     /  / _/ / '    (   '
+               \`    } ~ ~~ -~=\   _~_  / \ / \ )^ ( // :_  / '
+               |    ,          _~-'   '~~__-_  / - |/     \ (
+                \  ,_--_     _/              \_'---', -~ .   \
+                 )/      /\ / /\   ,~,         \__ _}     \_  "~_
+                 ,      { ( _ )'} ~ - \_    ~\  (-:-)       "\   ~
+                        /'' ''  )~ \~_ ~\   )->  \ :|    _,       "
+                       (\  _/)''} | \~_ ~  /~(   | :)   /          }
+                      <``  >;,,/  )= \~__ {{{ '  \ =(  ,   ,       ;
+                     {o_o }_/     |v  '~__  _    )-v|  "  :       ,"
+                     {/"\_)       {_/'  \~__ ~\_ \\_} '  {        /~\
+                     ,/!          '_/    '~__ _-~ \_' :  '      ,"  ~
+                    (''`                  /,'~___~    | /     ,"  \ ~'
+                   '/, )                 (-)  '~____~";     ,"     , }
+                 /,')                    / \         /  ,~-"       '~'
+             (  ''/                     / ( '       /  /          '~'
+          ~ ~  ,, /) ,                 (/( \)      ( -)          /~'
+        (  ~~ )`  ~}                   '  \)'     _/ /           ~'
+        { |) /`,--.(  }'                    '     (  /          /~'
+        (` ~ ( c|~~| `}   )                        '/:\         ,'
+        ~ )/``) )) '|),                          (/ | \)                 -sjm
+        (` (-~(( `~`'  )                        ' (/ '
+         `~'    )'`')                              '
+           ` ``
+
+        Courtesy: http://ascii.co.uk/art/dragon
+
+      -->
+
+      <a-entity id="ui"
+        rotation="-12 0 0"
+        position="0 0 0">
+        <a-plane
+            id="ui-trigger"
+            rotation="-24 0 0"
+            position="0 -0.5 -1.9"
+            width="4"
+            height="1.5"
+            material="visible: false; color: yellow"
+            class="highlightable">
+        </a-plane>
+        <a-entity id="navigation"
+            scale="0 0 0"
+            rotation="-24 0 0"
+            position="0 -0.5 -2">
+          <a-plane id="arrow-right"
+            position="1.5 0 0"
+            rotation="0 -25 0"
+            class="clickable"
+            button
+            transparent="true"
+            src="/assets/storyboard-controls/arrow-right-idle.png"
+            event-set__1="_event: focus; src: /assets/storyboard-controls/arrow-right-focused.png"
+            event-set__2="_event: blur; src: /assets/storyboard-controls/arrow-right-idle.png"
+            height="0.5"
+            width="0.5">
+          </a-plane>
+          <a-entity id="pagination"
+            position="0 0 0">
+            <a-plane id="pagination-background" color="#333" width="2.5" height="0.5"></a-plane>
+            <a-ring id="pagination-highlight" color="#00B9FF" radius-inner="0.08" radius-outer="0.12"></a-ring>
+            <a-entity id="pagination-dots"></a-entity>
+          </a-entity>
+          <a-plane id="arrow-left"
+            rotation="0 25 0"
+            class="clickable"
+            button
+            transparent="true"
+            src="/assets/storyboard-controls/arrow-left-idle.png"
+            event-set__1="_event: focus; src: /assets/storyboard-controls/arrow-left-focused.png"
+            event-set__2="_event: blur; src: /assets/storyboard-controls/arrow-left-idle.png"
+            height="0.5"
+            width="0.5">
+          </a-plane>
+        </a-entity>
+      </a-entity>
+
+      <a-camera id="camera" position="0 0 0">
+        <a-entity
+          id="cursor"
+          raycaster="objects: [storyboard-target-id], .clickable"
+          cursor="fuse: false"
+          position="0 0 -2"
+          scale="0.025 0.025 0.025"
+          geometry="primitive: circle"
+          material="color: #FF00E6; shader: flat; opacity: 0.5">
+            <a-animation begin="mouseenter" easing="ease-in" attribute="material.opacity"
+                from="0.1" to="1.0" dur="75"></a-animation>
+            <a-animation begin="mouseenter" easing="ease-in-out" attribute="scale"
+                from="0.025 0.025 0.025" to="0.05 0.05 0.05" dur="150"></a-animation>
+            <a-animation begin="mouseleave" easing="ease-out" attribute="material.opacity"
+                from="1.0" to="0.1" dur="75"></a-animation>
+            <a-animation begin="mouseleave" easing="ease-in-out" attribute="scale"
+                from="0.05 0.05 0.05" to="0.025 0.025 0.025" dur="150"></a-animation>
+        </a-entity>
+        <a-entity
+          id="cursor2"
+          raycaster="objects: .highlightable"
+          position="0 0 0"
+          cursor>
+        </a-entity>
+      </a-camera>
     </a-scene>
   </body>
 </html>
