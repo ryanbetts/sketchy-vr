@@ -44,7 +44,7 @@ window.onload = function() {
     for (var i=0; i<storyboardButtons.length; i++) {
       var button = storyboardButtons[i];
       button.addEventListener('click', function () {
-        navigateToId(button['storyboard-target-id']);
+        navigateToId(button.getAttribute('storyboard-target-id'));
       });
     }
   }
@@ -64,7 +64,7 @@ window.onload = function() {
   var navigateToId = function (id) {
     var index;
     for (var i=0; i<storyboardFrames.length; i++ ) {
-      if (id == storyboardFrames[i]['storyboard-frame-id']) {
+      if (id == storyboardFrames[i].getAttribute('storyboard-frame-id')) {
         console.log('match!',id);
         index = i;
       }

@@ -4,6 +4,7 @@
     <title>Storyboard Template</title>
     <meta name="description" content="Storyboard Template">
     <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <!-- add your components here -->
     <script src="https://rawgit.com/ngokevin/aframe-event-set-component/master/dist/aframe-event-set-component.min.js"></script>
     <script src="https://rawgit.com/ngokevin/aframe-layout-component/master/dist/aframe-layout-component.min.js"></script>
     <script src="components/button.js"></script>
@@ -16,6 +17,7 @@
       <a-assets>
         <img id="frontSkyTexture" src="assets/front.jpg">
         <img id="backSkyTexture" src="assets/back.jpg">
+        <img id="cheerioWaveTexture" src="assets/cheerio-wave.JPG">
       </a-assets>
 
       <!--
@@ -27,8 +29,19 @@
 
         <!-- Frame 1 -->
         <a-entity storyboard-frame-id="frame-1">
-          <a-sky height="2048" width="2048" radius="300" src="#backSkyTexture" phi-length="180" theta-length="180"></a-sky>
+          <a-sky height="2048" width="2048" radius="300" src="#cheerioWaveTexture" phi-length="180" theta-length="180"></a-sky>
           <a-sky height="2048" width="2048" radius="300" src="#frontSkyTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
+          <!--
+            If you want an element to link to a specific frame when clicked,
+            give it a `storyboard-target-id` attribute
+          -->
+          <a-circle storyboard-target-id="flip-frame-1" radius="1" color="tomato" opacity="0.4" position="-5.20 1.6 -3.80" rotation="0 65.89 0"></a-circle>
+        </a-entity>
+
+        <!-- Flipped version of frame 1 -->
+        <a-entity storyboard-frame-id="flip-frame-1">
+          <a-sky height="2048" width="2048" radius="300" src="#frontSkyTexture" phi-length="180" theta-length="180"></a-sky>
+          <a-sky height="2048" width="2048" radius="300" src="#cheerioWaveTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
         </a-entity>
 
         <!-- Frame 2 -->
@@ -37,7 +50,7 @@
             If you want an element to link to a specific frame when clicked,
             give it a `storyboard-target-id` attribute
           -->
-          <a-box position="0 0 -4" color="orange" storyboard-target-id="frame-4"/>
+          <a-box color="orange" storyboard-target-id="frame-4" position="0 0 -4"/>
         </a-entity>
 
         <!-- Frame 3 -->
@@ -49,6 +62,7 @@
         <a-entity storyboard-frame-id="frame-4">
           <a-box position="0 0 -4" color="red"/>
         </a-entity>
+
       </a-entity>
 
       <!---
@@ -160,10 +174,13 @@
           cursor="fuse: false"
           position="0 0 -2"
           scale="0.025 0.025 0.025"
-          geometry="primitive: circle"
+          geometry="primitive: ring"
           material="color: #FF00E6; shader: flat; opacity: 0.5">
-            <a-animation begin="mouseenter" easing="ease-in" attribute="material.opacity"
-                from="0.1" to="1.0" dur="75"></a-animation>
+            <a-animation
+                begin="mouseenter"
+                attribute="material.opacity"
+                dur="150"
+                from="0.5" to="1.0"></a-animation>
             <a-animation begin="mouseenter" easing="ease-in-out" attribute="scale"
                 from="0.025 0.025 0.025" to="0.05 0.05 0.05" dur="150"></a-animation>
             <a-animation begin="mouseleave" easing="ease-out" attribute="material.opacity"
