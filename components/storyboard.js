@@ -3,8 +3,46 @@ if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');
 }
 
+AFRAME.registerComponent('storyboard-frame', {
+  multiple:true,
+  schema: {
+    id: {type: 'string'},
+    front: {type: 'asset'},
+    back: {type: 'asset'}
+  },
+  init: function () {
+    console.log('frame:'+this.data.id, this.el.components);
+    if (this.data.front) {
+      var frontHemisphere = document.createElement('a-sky');
+      frontHemisphere.setAttribute('height','2048');
+      frontHemisphere.setAttribute('width','2048');
+      frontHemisphere.setAttribute('radius','300');
+      frontHemisphere.setAttribute('src',this.data.front);
+      frontHemisphere.setAttribute('phi-length','180');
+      frontHemisphere.setAttribute('theta-length','180');
+      frontHemisphere.setAttribute('rotation','0 180 0');
+      this.el.appendChild(frontHemisphere);
+    }
+    if (this.data.back) {
+      var backHemisphere = document.createElement('a-sky');
+      backHemisphere.setAttribute('height','2048');
+      backHemisphere.setAttribute('width','2048');
+      backHemisphere.setAttribute('radius','300');
+      backHemisphere.setAttribute('src',this.data.back);
+      backHemisphere.setAttribute('phi-length','180');
+      backHemisphere.setAttribute('theta-length','180');
+      backHemisphere.setAttribute('rotation','0 180 0');
+      this.el.appendChild(backHemisphere);
+    }
+  }
+});
+
+/* global AFRAME, THREE */
+if (typeof AFRAME === 'undefined') {
+  throw new Error('Component attempted to register before AFRAME was available.');
+}
+
 AFRAME.registerComponent('storyboard', {
-  // dependencies: ['button'],
   schema: {
     clickOffset: {
       default: 0.05
@@ -14,7 +52,7 @@ AFRAME.registerComponent('storyboard', {
     }
   },
   init: function () {
-    console.log('storyboard-controls: init');
+    console.log('storyboard')
     // init flags
     this.uiVisible=false;
     this.hideUITimeout=null;
@@ -35,7 +73,6 @@ AFRAME.registerComponent('storyboard', {
     }
   },
   buildUI: function () {
-    console.log('buildUI');
     this.$uiContainer = document.createElement('a-entity');
     this.el.appendChild(this.$uiContainer);
     // create ui trigger
@@ -100,7 +137,6 @@ AFRAME.registerComponent('storyboard', {
     this.navigateToIndex(0);
   },
   buildCamera: function () {
-    console.log('build camera');
     // create camera
     this.$camera=document.createElement('a-camera');
     this.el.appendChild(this.$camera);
@@ -124,13 +160,11 @@ AFRAME.registerComponent('storyboard', {
     this.$camera.appendChild(this.$cursorHighlightable);
   },
   showUI: function() {
-    console.log('show UI');
     this.uiVisible = true;
     clearTimeout(this.hideUITimeout);
     this.$navigation.setAttribute('scale','1 1 1');
   },
   hideUI: function () {
-    console.log('hide UI');
     var that = this;
     this.hideUITimeout = setTimeout(function() {
       that.$navigation.setAttribute('scale','0 0 0');
@@ -155,7 +189,6 @@ AFRAME.registerComponent('storyboard', {
     var storyboardButtons = document.querySelectorAll('[link-to-frame]');
     for (var i=0; i<storyboardButtons.length; i++) {
       var button = storyboardButtons[i];
-      // button.removeEventListener('click');
       button.addEventListener('click', function () {
         this.navigateToId(button.getAttribute('link-to-frame'));
       }.bind(this));
@@ -175,13 +208,14 @@ AFRAME.registerComponent('storyboard', {
   navigateToId: function (id) {
     var index;
     for (var i=0; i<this.storyboardFrames.length; i++ ) {
-      if (id == this.storyboardFrames[i].getAttribute('storyboard-frame')) {
+      if (id == this.storyboardFrames[i].id) {
         index = i;
       }
     }
     this.navigateToIndex(index);
   },
   updateNavigation: function () {
+    console.log('updateNavigation');
     this.storyboardFrames = document.querySelectorAll('[storyboard-frame]');
     // initialize the frames
     for (var i = 0; i<this.storyboardFrames.length; i++) {
@@ -190,7 +224,7 @@ AFRAME.registerComponent('storyboard', {
       var dot = document.createElement('a-circle');
       dot.setAttribute('color','#FFFFFF');
       dot.setAttribute('scale',this.dotSize+' '+this.dotSize+' '+this.dotSize);
-      dot.setAttribute('link-to-frame',frame.getAttribute('storyboard-frame'));
+      dot.setAttribute('link-to-frame',frame.id);
       var that = this;
       dot.addEventListener('click', function (evt) {
         that.navigateToId(evt.target.getAttribute('link-to-frame'));
@@ -200,26 +234,9 @@ AFRAME.registerComponent('storyboard', {
     this.dotsContainerWidth = this.dotMargin*(this.storyboardFrames.length-1);
     this.$paginationDots.setAttribute('position', -.5*this.dotsContainerWidth+' 0 0');
     this.$paginationDots.setAttribute('layout','type: line; margin: '+this.dotMargin);
-    this.$paginationBG.id="blahaaa";
     this.$paginationBG.setAttribute('width',this.dotsContainerWidth+this.dotSize*4);
     this.$paginationBG.setAttribute('position','0 0 -.1');
     this.$leftArrow.setAttribute('position',(-this.dotsContainerWidth/2-this.arrowSize)+' 0 0');
     this.$rightArrow.setAttribute('position',(this.dotsContainerWidth/2+this.arrowSize)+' 0 0');
   }
 });
-
-// AFRAME.registerComponent('storyboard-frame', {
-//   multiple:true,
-//   schema: {type: 'string'},
-//   init: function () {
-//     console.log('storyboard-frame: init');
-//   }
-// });
-//
-// AFRAME.registerComponent('link-to-frame', {
-//   multiple:true,
-//   schema: {type: 'string'},
-//   init: function () {
-//     console.log('link-to-frame: init');
-//   }
-// });

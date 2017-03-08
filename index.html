@@ -21,42 +21,29 @@
       </a-assets>
 
       <!-- Frame 1 -->
-      <a-entity storyboard-frame="frame-1">
-        <a-sky height="2048" width="2048" radius="300" src="#cheerioWaveTexture" phi-length="180" theta-length="180"></a-sky>
-        <a-sky height="2048" width="2048" radius="300" src="#frontSkyTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
-        <!--
-          If you want an element to link to a specific frame when clicked,
-          give it a `storyboard-target-id` attribute
-        -->
-        <a-circle link-to-frame="frame-2" radius="1" color="tomato" opacity="0.4" position="-5.20 1.6 -3.80" rotation="0 65.89 0"></a-circle>
-      </a-entity>
+      <a-entity id="frame-1" storyboard-frame="front: #frontSkyTexture"></a-entity>
 
-      <!-- Flipped version of frame 2 -->
-      <a-entity storyboard-frame="frame-2">
-        <a-sky height="2048" width="2048" radius="300" src="#frontSkyTexture" phi-length="180" theta-length="180"></a-sky>
-        <a-sky height="2048" width="2048" radius="300" src="#cheerioWaveTexture" phi-length="180" theta-length="180" rotation="0 180 0"></a-sky>
-      </a-entity>
+      <!-- Frame 2: you can have a back texture as well -->
+      <a-entity id="frame-2" storyboard-frame="front: #frontSkyTexture; back: #backSkyTexture"></a-entity>
 
       <!-- Frame 3 -->
-      <a-entity storyboard-frame="frame-3">
+      <a-entity id="frame-3" storyboard-frame="front: #cheerioWaveTexture;">
         <!--
           If you want an element to link to a specific frame when clicked,
           give it a `storyboard-target-id` attribute
         -->
-        <a-box link-to-frame="frame-4" color="orange" position="0 0 -4"></a-box>
+        <a-circle link-to-frame="frame-4" radius="1" color="tomato" opacity="0.4" position="-5.20 1.6 -3.80" rotation="0 65.89 0"></a-circle>
       </a-entity>
 
       <!-- Frame 4 -->
-      <a-entity storyboard-frame="frame-4">
+      <a-entity id="frame-4" storyboard-frame>
         <a-box position="0 0 -4" color="yellow"></a-box>
       </a-entity>
 
       <!-- Frame 5 -->
-      <a-entity storyboard-frame="frame-5">
+      <a-entity id="frame-5" storyboard-frame>
         <a-box position="0 0 -4" color="red"></a-box>
       </a-entity>
-
-      <a-box position="0 2 -6" color="pink" id="persistent nav" link-to-frame="frame-1"></a-box>
 
     </a-scene>
   </body>
